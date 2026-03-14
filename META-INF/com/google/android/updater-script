@@ -1,0 +1,37 @@
+
+set_progress(0.00);
+	ui_print("........................... ");
+	ui_print(" ");
+	ui_print(" ");
+	ui_print("	Repartitioner For SAMSUNG GALAXY M12 (SM-M127F)");
+	ui_print(" ");
+	ui_print(" ");
+	ui_print("........................... ");
+	
+set_progress(0.5);
+	ui_print(" ");
+	ui_print("	Executing repartition script");
+	package_extract_file("sgdisk", "/tmp/sgdisk");
+	set_perm(0, 0, 0777, "/tmp/sgdisk");
+	package_extract_file("repartition.sh", "/tmp/repartition.sh");
+	set_perm(0, 0, 0777, "/tmp/repartition.sh");
+	run_program("/tmp/repartition.sh");
+	ifelse(is_mounted("/system"), unmount("/system"));
+	ifelse(is_mounted("/vendor"), unmount("/vendor"));
+	ifelse(is_mounted("/product"), unmount("/product"));
+	ifelse(is_mounted("/odm"), unmount("/odm"));
+		
+
+set_progress(0.9);
+	ui_print(" ");
+	ui_print(" ");
+	ui_print("	Finished! ");
+	ui_print(" ");
+	ui_print(" ");
+	ui_print("  NOW REBOOT RECOVERY! ");
+	ui_print(" ");
+	ui_print(" ");
+	
+set_progress(1.0);
+
+
