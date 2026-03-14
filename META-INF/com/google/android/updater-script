@@ -1,0 +1,52 @@
+
+set_progress(0.00);
+	ui_print("........................... ");
+	ui_print(" ");
+	ui_print(" ");
+	ui_print("	Repartitioner For SAMSUNG GALAXY M12 (SM-M127F)");
+	ui_print(" ");
+	ui_print(" ");
+	ui_print("........................... ");
+	ui_print(" ");
+	ui_print("	WARNING: erases super, prism, optics, cache,");
+	ui_print("	omr, cp_debug, spu and userdata (all data).");
+	ui_print("	The script refuses to run on any other layout.");
+
+set_progress(0.3);
+	ui_print(" ");
+	ui_print("	Unmounting partitions");
+	ifelse(is_mounted("/data"), unmount("/data"));
+	ifelse(is_mounted("/cache"), unmount("/cache"));
+	ifelse(is_mounted("/metadata"), unmount("/metadata"));
+	ifelse(is_mounted("/efs"), unmount("/efs"));
+	ifelse(is_mounted("/sec_efs"), unmount("/sec_efs"));
+	ifelse(is_mounted("/prism"), unmount("/prism"));
+	ifelse(is_mounted("/optics"), unmount("/optics"));
+	ifelse(is_mounted("/system"), unmount("/system"));
+	ifelse(is_mounted("/vendor"), unmount("/vendor"));
+	ifelse(is_mounted("/product"), unmount("/product"));
+	ifelse(is_mounted("/odm"), unmount("/odm"));
+
+set_progress(0.5);
+	ui_print(" ");
+	ui_print("	Executing repartition script");
+	package_extract_file("sgdisk", "/tmp/sgdisk");
+	set_perm(0, 0, 0777, "/tmp/sgdisk");
+	package_extract_file("repartition.sh", "/tmp/repartition.sh");
+	set_perm(0, 0, 0777, "/tmp/repartition.sh");
+	ifelse(run_program("/tmp/repartition.sh") == "0",
+		ui_print("	Partition table written."),
+		abort("Repartition refused or failed. Nothing was erased if the message says so; see /tmp/recovery.log"));
+
+set_progress(0.9);
+	ui_print(" ");
+	ui_print(" ");
+	ui_print("	Finished! ");
+	ui_print(" ");
+	ui_print(" ");
+	ui_print("  NOW REBOOT RECOVERY! ");
+	ui_print("  Then flash super and the CSC (prism/optics).");
+	ui_print(" ");
+	ui_print(" ");
+
+set_progress(1.0);
